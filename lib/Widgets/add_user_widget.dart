@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:user_app_flutter/Widgets/utils.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Models/user_model.dart';
@@ -20,6 +21,8 @@ class _addWidgetState extends ConsumerState<addWidget> {
   late Future<List<User>> dataList;
 
   final _formKey = GlobalKey<FormState>();
+  
+  var value;
   @override
   void initState() {
     super.initState();
@@ -54,71 +57,23 @@ class _addWidgetState extends ConsumerState<addWidget> {
                 chooseProfileImage();
               },
               child: Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  margin: const EdgeInsets.only(bottom: 50),
+                  // padding: const EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(bottom: 40),
                   height: 120,
                   width: 120,
                   decoration: const BoxDecoration(
                       color: Colors.white, shape: BoxShape.circle),
                   child: const CircleAvatar(
-                    backgroundColor: Color(0xf2f2f2f2),
-                    // backgroundImage: AssetImage(),
+                    backgroundColor: Color(0xd9d9d9d9),
+                    // backgroundImage: imageFile 
                   )),
             ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 25),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'FirstName',
-                  border: OutlineInputBorder(),
-      
-
-                  hintText: 'Prénom',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'tu dois completer le champs';
-                  }
-                  return null;
-                },
-                controller: userFirstNameController,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 25),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'LastName',
-                  border: OutlineInputBorder(),
-                  hintText: 'Nom',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'tu dois completer le champs';
-                  }
-                  return null;
-                },
-                controller: userLastNameController,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 25),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Age',
-                  border: OutlineInputBorder(),
-                  hintText: 'Age',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'tu dois completer le champs';
-                  }
-                  return null;
-                },
-                controller: userAgeController,
-              ),
-            ),
+            formRow(value, 'First name', 'Prénom', userFirstNameController,),
+            formRow(value, 'Last name', 'Nom', userLastNameController,),
+            formRow(value, 'Age', 'Age', userAgeController,),
+            const SizedBox(height: 15),
             SizedBox(
+              
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
@@ -127,7 +82,7 @@ class _addWidgetState extends ConsumerState<addWidget> {
                   if (_formKey.currentState!.validate()) {
                     final firstName = userFirstNameController.text;
                     final lastName = userLastNameController.text;
-                    final age = userAgeController.text;
+                    final age = int.parse(userAgeController.text);
                     //Pour envoyer un message lors de l'envoie
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('envoi en cours')));
@@ -136,7 +91,7 @@ class _addWidgetState extends ConsumerState<addWidget> {
                     // debugPrint('${age}');
                     UsersDatabase.addUsers(User(
                       id: null,
-                      age: int.parse(age),
+                      age: age,
                       firstName: firstName,
                       lastName: lastName
                     ));
@@ -147,11 +102,44 @@ class _addWidgetState extends ConsumerState<addWidget> {
                     userAgeController.clear();
                   }
                 },
-                child: Text(user == null ? 'Save' : 'Edit'),
+                child: Text(user == null ? 'Save' : 'Edit', style: Utils.regularText(),),
               ),
             )
           ]),
         );
+  }
+
+  Container formRow(val, String label,  String hint, usercontroller) {
+    return Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: Utils.boldText(),),
+                SizedBox(height: 3),
+                TextFormField(
+                  
+                  cursorColor: Colors.black,
+                  style: TextStyle(fontFamily: 'JetBrain' ),
+                  decoration:  InputDecoration(
+                    // labelText: 'FirstName',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.black, width: 2)
+                    ),
+                    hintText: hint,
+                  ),
+                  validator: (val) {
+                    if (val == null || val.isEmpty) {
+                      return 'tu dois completer le champs';
+                    }
+                    return null;
+                  },
+                  controller: usercontroller,
+                ),
+              ],
+            ),
+          );
   }
 }
 

@@ -16,7 +16,7 @@ class AddUser extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Create Profile", style: Utils.boldText(),),
+        title:  Text("Create Profile", style: Utils.regularText(),),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),

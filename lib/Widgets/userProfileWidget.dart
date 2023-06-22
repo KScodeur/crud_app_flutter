@@ -6,8 +6,7 @@ import 'package:user_app_flutter/db/users_database.dart';
 
 import '../Models/user_model.dart';
 import '../Pages/home_page.dart';
-
-
+import 'Utils.dart';
 
 class ProfilePage extends ConsumerWidget {
   final User user;
@@ -15,12 +14,12 @@ class ProfilePage extends ConsumerWidget {
     Key? key,
     required this.user,
   }) : super(key: key);
- 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.only(left: 30, right: 30),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
           children: [
             Expanded(
@@ -31,27 +30,29 @@ class ProfilePage extends ConsumerWidget {
                     decoration: BoxDecoration(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(
-                          width: 2,
-                        ),
+                        border: Border.all(width: 1, color: Color(0x7a7a7a7a)),
                         color: const Color(0xf2f2f2f2)),
                     // margin: const EdgeInsets.only(left: 20, right: 20),
                     width: double.infinity,
-                    height: 200,
+                    height: 220,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                            margin: const EdgeInsets.only(top: 10, bottom: 20),
+                            margin: const EdgeInsets.only(top: 20, bottom: 20),
                             height: 120,
                             width: 120,
                             decoration: const BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child:  CircleAvatar(
-                              backgroundColor: Colors.black,
-                                // backgroundImage: AssetImage(),
-                                )),
-                        Text('${user.firstName} ${user.lastName}'),
+                                color: Color(0xf2f2f2f2),
+                                shape: BoxShape.circle),
+                            child: const CircleAvatar(
+                              backgroundColor: Color(0xd9d9d9d9),
+                              // backgroundImage: AssetImage(),
+                            )),
+                        Text(
+                          '${user.firstName} ${user.lastName}',
+                          style: Utils.boldText(),
+                        ),
                         Text('${user.age} Y/n'),
                       ],
                     ),
@@ -65,8 +66,9 @@ class ProfilePage extends ConsumerWidget {
               width: double.infinity,
               child: Container(
                 decoration: const BoxDecoration(
-                  borderRadius:  BorderRadius.all(Radius.circular(255)),),
-                child: ElevatedButton( 
+                  borderRadius: BorderRadius.all(Radius.circular(255)),
+                ),
+                child: ElevatedButton(
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.black),
                     onPressed: () {
@@ -80,7 +82,7 @@ class ProfilePage extends ConsumerWidget {
                                     age: user.age,
                                   )));
                     },
-                    child: const Text('Edit Profile')),
+                    child: Text('Edit Profile', style: Utils.regularText())),
               ),
             ),
             Container(
@@ -92,37 +94,87 @@ class ProfilePage extends ConsumerWidget {
                     backgroundColor: Colors.black,
                   ),
                   onPressed: () {
-                    UsersDatabase.deleteUser(user);
-                    // AlertDialog(
-                    //   title: const Text('Suppression'),
-                    //   content: const Text(
-                    //       "Voulez-vous vraiment faire la suppression"),
-                    //   actions: [
-                    //     ElevatedButton(
-                    //         onPressed: () async {
-                    //           // await UsersDatabase.deleteUser(user);
-                    //           //  Navigator.pop(context);
-                    //           // setState(() {});
-                    //         },
-                    //         child: const Text('yes'),
-
-                    //         ),
-                    //         ElevatedButton(
-                    //         onPressed: () =>
-                    //           Navigator.pop(context),
-                    //           // setState(() {});
-                    //         child: const Text('No'))
-                    //   ],
-                    // );
-
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    // showDialog(context: context, builder: builder)
+                     showDialog(
+        context: (context),
+        builder: (context) {
+          return SimpleDialog(
+            title: Text('titleDialog',
+                style: Utils.boldText(), textAlign: TextAlign.center),
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.only(top: 0, left: 5, bottom: 5, right: 5),
+                child: Column(children: [
+                  Container(
+                    padding: const EdgeInsets.only(left: 5, right: 5),
+                    child: Text('contentDialog',
+                        style: Utils.regularText(),
+                        textAlign: TextAlign.center),
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Container(
+                    child: Wrap(
+                      children: [
+                        SizedBox(
+                          width: 110,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color(0xd9d9d9d9)),
+                            ),
+                            child:  Text(
+                              'cancel',
+                              style: const TextStyle(
+                                  fontFamily: 'JetBrain', color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: 110,
+                          child: ElevatedButton(
+                            onPressed: (){
+                              UsersDatabase.deleteUser(user);
+                              Navigator.push(
+                                  context, MaterialPageRoute(builder: (context) =>  HomePage()));
+                            },
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black)),
+                            child:  Text(
+                              'save',
+                              style:const  TextStyle(
+                                fontFamily: 'JetBrain',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ]),
+              )
+            ],
+          );
+        });
                   },
-                  child: const Text('Delete User')),
+                  child: Text('Delete User', style: Utils.regularText())),
             )
           ],
         ),
       ),
     );
+  }
+
+  onPressed(context, user) {
+ (UsersDatabase.deleteUser(user));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) =>  HomePage()));
   }
 }

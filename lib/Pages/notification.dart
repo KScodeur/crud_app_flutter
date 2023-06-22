@@ -12,7 +12,7 @@ class _NotifPageState extends State<NotifPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Users",style: TextStyle(fontFamily: 'JetBrain'),),
+        title: const Text("Notification",style: TextStyle(fontFamily: 'JetBrain'),),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),

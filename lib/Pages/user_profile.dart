@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Models/user_model.dart';
+import '../Widgets/Utils.dart';
 import '../Widgets/add_user_widget.dart';
 import '../Widgets/userProfileWidget.dart';
 
@@ -18,7 +19,7 @@ class UserProfile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Profile'),
+        title:  Text('User Profile', style: Utils.regularText(),),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),

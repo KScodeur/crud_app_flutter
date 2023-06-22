@@ -57,7 +57,7 @@ class _UserAllWidgetState extends ConsumerState<UserAllWidget> {
                 itemBuilder: ((context, index) {
                   int user_id = snapshot.data![index].id!.toInt();
                   String firstName = snapshot.data![index].firstName.toString();
-                  String lastName = snapshot.data![index].firstName.toString();
+                  String lastName = snapshot.data![index].lastName.toString();
                   String age = snapshot.data![index].age.toString();
                   return GestureDetector(
                     onTap: () {
@@ -81,7 +81,8 @@ class _UserAllWidgetState extends ConsumerState<UserAllWidget> {
                                     color: Colors.white,
                                     shape: BoxShape.circle),
                                 child: const CircleAvatar(
-                                  backgroundColor: Color(0xf2f2f2f2),
+                                  backgroundColor: Color(0xd9d9d9d9),
+                                  child: Icon(Icons.person,size: 45, color: Colors.black,),
                                   // backgroundImage: AssetImage(['image']),
                                 ))
                           ],
@@ -99,7 +100,7 @@ class _UserAllWidgetState extends ConsumerState<UserAllWidget> {
                                   
                                 ],
                               ),
-                              Text('$age ans')
+                              Text('$age ans', style: Utils.boldText()),
                             ],
                           ),
                         )

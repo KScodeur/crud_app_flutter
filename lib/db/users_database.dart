@@ -46,11 +46,7 @@ class UsersDatabase {
      ''');
   }
 
-  // Future<int> addUser(User user) async {
-  //   var db = await database;
-  //   return await db.insert(userTable, user.toJson(),
-  //       conflictAlgorithm: ConflictAlgorithm.replace);
-  // }
+ 
 
   static Future<int> addUsers(User user) async {
     final db = await databases;
@@ -87,6 +83,17 @@ class UsersDatabase {
     // final db = await _getDB();
     return await db.delete(userTable, where: 'id=?', whereArgs: [user.id]);
   }
+
+    // static _onCreateDB(Database databases, int version) async {
+    // return await databases.execute('''
+    //  CREATE TABLE user(
+    //    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //    firstName TEXT NOT NULL,
+    //    lastName TEXT NOT NULL,
+    //    age INTEGER NOT NULL
+    // )
+    //  ''');
+  // }
 
   // Future close() async {
   //   final db = await instance.database;
